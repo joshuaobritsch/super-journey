@@ -15,7 +15,7 @@ class StoriesBloc {
   Function(int) get fetchItem => _items.sink.add;
 
   StoriesBloc() {
-    _items.stream.transform(_itemsTransformer());
+    items = _items.stream.transform(_itemsTransformer());
   }
 
   fetchTopIds() async {

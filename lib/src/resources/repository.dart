@@ -4,23 +4,35 @@ import 'news_db_provider.dart';
 import '../models/item_model.dart';
 
 class Repository {
-  NewsDbProvider dbProvider = NewsDbProvider();
-  NewsApiProvider apiProvider = NewsApiProvider();
+  List<Source> sources = <Source>[
+    newsDbProvider,
+    NewsApiProvider(),
+  ];
+  List<Cache> caches = <Cache>[
+    newsDbProvider,
+  ];
 
+  // Todo - Iterate over sources
   Future<List<int>> fetchTopIds() {
-    return apiProvider.fetchTopIds();
+    return sources[1].fetchTopIds();
   }
 
   Future<ItemModel> fetchItem(int id) async {
-    var item = await dbProvider.fetchItem(id);
+    ItemModel item;
+    Source source;
+    Cache cache;
 
-    if (item != null) {
-      return item;
+    for (source in sources) {
+      item = await source.fetchItem(id);
+
+      if (item != null) {
+        break;
+      }
     }
 
-    item = await apiProvider.fetchItem(id);
-
-    dbProvider.addItem(item);
+    for (cache in caches) {
+      cache.addItem(item);
+    }
 
     return item;
   }

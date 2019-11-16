@@ -46,7 +46,7 @@ class Comment extends StatelessWidget {
 
   Widget buildText(ItemModel item) {
     final text = item.text
-        .replaceAll('&#x27', "'")
+        .replaceAll('&#x27;', "'")
         .replaceAll('<p>', '\n\n')
         .replaceAll('</p>', '');
 
